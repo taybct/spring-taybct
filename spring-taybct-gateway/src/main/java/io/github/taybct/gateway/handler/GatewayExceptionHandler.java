@@ -4,7 +4,6 @@ import io.github.taybct.tool.core.result.R;
 import io.github.taybct.tool.core.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -14,6 +13,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.*;
 import org.springframework.web.reactive.result.view.ViewResolver;
@@ -28,7 +28,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 @Order(-1)
-@AutoConfiguration
+@Component
 @Slf4j
 public class GatewayExceptionHandler extends AbstractErrorWebExceptionHandler {
     // 构造注入
