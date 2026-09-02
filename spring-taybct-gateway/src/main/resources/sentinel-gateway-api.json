@@ -1,0 +1,8 @@
+[
+  {
+    "apiName":"api_group",
+    "predicateItems":[
+      {"pattern":"/**"}
+    ]
+  }
+]
