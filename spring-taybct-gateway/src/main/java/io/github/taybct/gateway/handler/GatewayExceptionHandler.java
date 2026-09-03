@@ -57,7 +57,7 @@ public class GatewayExceptionHandler extends AbstractErrorWebExceptionHandler {
         String message = (String) errorPropertiesMap.getOrDefault("message", null);
         String trace = (String) errorPropertiesMap.getOrDefault("trace", null);
 
-        log.error("\r\n[网关异常处理] \r\n 请求路径:{} \r\n 异常信息:{} \r\n 堆栈信息:{}", request.exchange().getRequest().getPath(), message, trace);
+        log.trace("\r\n[网关异常处理] \r\n 请求路径:{} \r\n 异常信息:{} \r\n 堆栈信息:{}", request.exchange().getRequest().getPath(), message, trace);
 
         return ServerResponse.status(HttpStatus.valueOf(status))
                 .contentType(MediaType.APPLICATION_JSON)
