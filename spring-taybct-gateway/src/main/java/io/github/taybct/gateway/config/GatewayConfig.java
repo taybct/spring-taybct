@@ -85,12 +85,17 @@ public class GatewayConfig {
         @NotNull
         @Override
         public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
-            ServerHttpResponse response = exchange.getResponse();
-            response.setStatusCode(HttpStatus.TOO_MANY_REQUESTS);
-            response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-            String body = JSONUtil.toJsonStr(R.fail(ResultCode.GATEWAY_SENTINEL_BLOCK));
-            DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
-            return response.writeWith(Mono.just(buffer));
+            // 只有Sentinel限流异常才走自定义返回
+            if (ex instanceof com.alibaba.csp.sentinel.slots.block.BlockException) {
+                ServerHttpResponse response = exchange.getResponse();
+                response.setStatusCode(HttpStatus.TOO_MANY_REQUESTS);
+                response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+                String body = JSONUtil.toJsonStr(R.fail(ResultCode.GATEWAY_SENTINEL_BLOCK));
+                DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
+                return response.writeWith(Mono.just(buffer));
+            }
+            // 其他异常（503、404、服务不可用）交给父类原有逻辑
+            return super.handle(exchange, ex);
         }
     }
 }
